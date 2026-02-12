@@ -5,6 +5,7 @@
 package jframe;
 
 import dao.BookDAO;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.Book;
 
@@ -29,7 +30,7 @@ public class ManageBooks extends javax.swing.JFrame {
         BookDAO dao = new BookDAO();
     java.util.List<Book> bookList = dao.getAllBooks();
 
-        DefaultTableModel model = (DefaultTableModel) rSTableMetro2.getModel();
+    DefaultTableModel model = (DefaultTableModel) rSTableMetro2.getModel();
     model.setRowCount(0); // clear old data
 
     for (Book b : bookList) {
@@ -38,7 +39,6 @@ public class ManageBooks extends javax.swing.JFrame {
             b.getId(),
             b.getTitle(),
             b.getAuthor(),
-            b.getCategory(),
             b.getQuantity()
         };
 
@@ -68,7 +68,6 @@ public class ManageBooks extends javax.swing.JFrame {
         jLabel10 = new javax.swing.JLabel();
         txt_authorName = new app.bolivia.swing.JCTextField();
         jLabel6 = new javax.swing.JLabel();
-        jLabel11 = new javax.swing.JLabel();
         txt_quantity = new app.bolivia.swing.JCTextField();
         rSMaterialButtonCircle1 = new necesario.RSMaterialButtonCircle();
         rSMaterialButtonCircle2 = new necesario.RSMaterialButtonCircle();
@@ -76,7 +75,6 @@ public class ManageBooks extends javax.swing.JFrame {
         jPanel5 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
         jPanel4 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -163,11 +161,6 @@ public class ManageBooks extends javax.swing.JFrame {
         jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/AddNewBookIcons/AddNewBookIcons/icons8_Unit_26px.png"))); // NOI18N
         jPanel2.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 470, 60, 40));
 
-        jLabel11.setFont(new java.awt.Font("Tahoma", 0, 17)); // NOI18N
-        jLabel11.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel11.setText("Category:");
-        jPanel2.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 530, 290, -1));
-
         txt_quantity.setBackground(new java.awt.Color(102, 102, 255));
         txt_quantity.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(255, 255, 255)));
         txt_quantity.setFont(new java.awt.Font("Segoe UI", 0, 17)); // NOI18N
@@ -231,11 +224,6 @@ public class ManageBooks extends javax.swing.JFrame {
         jLabel12.setText("Quantity:");
         jPanel2.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 440, 290, -1));
 
-        jComboBox1.setBackground(new java.awt.Color(102, 102, 255));
-        jComboBox1.setForeground(new java.awt.Color(255, 255, 255));
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Novel", "Science", "Math", "History", "Programming", " " }));
-        jPanel2.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 570, 190, -1));
-
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 350, 830));
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
@@ -274,14 +262,14 @@ public class ManageBooks extends javax.swing.JFrame {
 
         rSTableMetro2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"1", "zere", "abc", null, "zez"},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {"1", "zere", "abc", "zez"},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "Book ID", "Name", "Author", "Category", "Quantity"
+                "Book ID", "Name", "Author", "Quantity"
             }
         ));
         rSTableMetro2.setColorBackgoundHead(new java.awt.Color(102, 102, 255));
@@ -293,6 +281,11 @@ public class ManageBooks extends javax.swing.JFrame {
         rSTableMetro2.setFuenteFilasSelect(new java.awt.Font("Yu Gothic UI", 1, 20)); // NOI18N
         rSTableMetro2.setFuenteHead(new java.awt.Font("Yu Gothic UI Semibold", 1, 20)); // NOI18N
         rSTableMetro2.setRowHeight(40);
+        rSTableMetro2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                rSTableMetro2MouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(rSTableMetro2);
 
         jPanel4.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 200, 620, 250));
@@ -369,15 +362,66 @@ public class ManageBooks extends javax.swing.JFrame {
 
     private void rSMaterialButtonCircle2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rSMaterialButtonCircle2ActionPerformed
         // TODO add your handling code here:
+        Book book = new Book(
+        Integer.parseInt(txt_bookId.getText()),
+        txt_bookName.getText(),
+        txt_authorName.getText(),
+        Integer.parseInt(txt_quantity.getText())
+    );
+
+    BookDAO dao = new BookDAO();
+    if(dao.addBook(book)) {
+        JOptionPane.showMessageDialog(this, "Book added successfully!");
+        loadBooksToTable(); // refresh table
+        clearFields();
+    } else {
+        JOptionPane.showMessageDialog(this, "Error adding book!");
+    }
     }//GEN-LAST:event_rSMaterialButtonCircle2ActionPerformed
 
+    private void clearFields() {
+    txt_bookId.setText("");
+    txt_bookName.setText("");
+    txt_authorName.setText("");
+    txt_quantity.setText("");
+}
     private void rSMaterialButtonCircle3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rSMaterialButtonCircle3ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_rSMaterialButtonCircle3ActionPerformed
 
     private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
         // TODO add your handling code here:
+        HomePage homePage = new HomePage();
+        homePage.setVisible(true);
+        dispose();
     }//GEN-LAST:event_jLabel2MouseClicked
+
+    private void rSTableMetro2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rSTableMetro2MouseClicked
+        // TODO add your handling code here:
+        try {
+        int rowNo = rSTableMetro2.getSelectedRow();
+        
+        // Validate row selection
+        if (rowNo < 0) {
+            return;
+        }
+        
+        DefaultTableModel model = (DefaultTableModel) rSTableMetro2.getModel();
+        
+        // Populate form fields from selected row
+        // Table Column order: Book ID(0), Name(1), Author(2), Quantity(4)
+        txt_bookId.setText(model.getValueAt(rowNo, 0).toString());
+        txt_bookName.setText(model.getValueAt(rowNo, 1).toString());
+        txt_authorName.setText(model.getValueAt(rowNo, 2).toString());
+        txt_quantity.setText(model.getValueAt(rowNo, 3).toString());          
+        
+    } catch (Exception e) {
+        javax.swing.JOptionPane.showMessageDialog(this, 
+            "Error loading book details. Please try again.", 
+            "Error", 
+            javax.swing.JOptionPane.ERROR_MESSAGE);
+    }
+    }//GEN-LAST:event_rSTableMetro2MouseClicked
 
     /**
      * @param args the command line arguments
@@ -405,10 +449,8 @@ public class ManageBooks extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

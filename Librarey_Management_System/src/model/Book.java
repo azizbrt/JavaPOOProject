@@ -12,22 +12,20 @@ public class Book {
     private int id;
     private String title;
     private String author;
-    private String category;
     private int quantity;
     public Book(){
     }
     //insert book without id
-    public Book(String title,String author,String category,int quantity){
+    public Book(String title,String author,int quantity){
         this.title=title;
         this.author=author;
-        this.category=category;
         this.quantity=quantity;
     }
-    public Book(int id,String title,String author,String category,int quantity){
+    public Book(int id,String title,String author,int quantity){
         this.id=id;
         this.title=title;
         this.author=author;
-        this.category=category;
+        
         this.quantity=quantity;
     }
     //getters and setters
@@ -53,13 +51,7 @@ public class Book {
         this.author = author;
     }
 
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
+    
 
     public int getQuantity() {
         return quantity;

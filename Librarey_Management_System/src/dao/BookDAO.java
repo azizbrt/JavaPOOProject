@@ -28,7 +28,6 @@ public class BookDAO {
                         rs.getInt("id"),
                         rs.getString("title"),
                         rs.getString("author"),
-                        rs.getString("category"),
                         rs.getInt("quantity")
                 );
 
@@ -45,4 +44,19 @@ public class BookDAO {
 
         return bookList;
     }
+public boolean addBook(Book book) {
+    try (Connection con = DBconnection.getConnection()) {
+        String sql = "INSERT INTO books(id,title, author, quantity) VALUES (?, ?, ?, ?)";
+        PreparedStatement pst = con.prepareStatement(sql);
+        pst.setInt(1, book.getId());
+        pst.setString(2, book.getTitle());
+        pst.setString(3, book.getAuthor());
+        pst.setInt(4, book.getQuantity());
+        return pst.executeUpdate() > 0;
+    } catch (Exception e) {
+        e.printStackTrace();
+        return false;
+    }
+}
+
 }
