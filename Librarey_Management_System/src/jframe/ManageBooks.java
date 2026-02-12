@@ -45,6 +45,7 @@ public class ManageBooks extends javax.swing.JFrame {
         model.addRow(row);
     }
 }
+    
 
 
     /**
@@ -362,6 +363,7 @@ public class ManageBooks extends javax.swing.JFrame {
 
     private void rSMaterialButtonCircle2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rSMaterialButtonCircle2ActionPerformed
         // TODO add your handling code here:
+        
         Book book = new Book(
         Integer.parseInt(txt_bookId.getText()),
         txt_bookName.getText(),
@@ -370,13 +372,18 @@ public class ManageBooks extends javax.swing.JFrame {
     );
 
     BookDAO dao = new BookDAO();
-    if(dao.addBook(book)) {
-        JOptionPane.showMessageDialog(this, "Book added successfully!");
-        loadBooksToTable(); // refresh table
-        clearFields();
-    } else {
-        JOptionPane.showMessageDialog(this, "Error adding book!");
-    }
+    if (dao.isBookExists(book.getTitle(), book.getAuthor())) {
+    JOptionPane.showMessageDialog(this, "Book already exists!");
+    
+} 
+else if (dao.addBook(book)) {
+    JOptionPane.showMessageDialog(this, "Book added successfully!");
+    loadBooksToTable();
+    clearFields();
+} 
+else {
+    JOptionPane.showMessageDialog(this, "Error while adding book.");
+}
     }//GEN-LAST:event_rSMaterialButtonCircle2ActionPerformed
 
     private void clearFields() {
@@ -387,6 +394,26 @@ public class ManageBooks extends javax.swing.JFrame {
 }
     private void rSMaterialButtonCircle3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rSMaterialButtonCircle3ActionPerformed
         // TODO add your handling code here:
+        if (txt_bookId.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please select a book first!");
+    return;
+}
+
+        int id = Integer.parseInt(txt_bookId.getText());
+        String title = txt_bookName.getText();
+        String author = txt_authorName.getText();
+        int quantity = Integer.parseInt(txt_quantity.getText());
+        Book book = new Book(id,title,author,quantity);
+        BookDAO bookDAO = new BookDAO();
+        if (bookDAO.updateBook(book)) {
+            JOptionPane.showMessageDialog(this, "Book Updated Successfully!");
+            clearFields();
+            loadBooksToTable();
+            
+        }
+        else{
+             JOptionPane.showMessageDialog(this, "Update Failed!");
+        }
     }//GEN-LAST:event_rSMaterialButtonCircle3ActionPerformed
 
     private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
