@@ -96,13 +96,19 @@ public class ManageBooks extends javax.swing.JFrame {
         jLabel8.setText("Enter Book ID:");
         jPanel2.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 80, 260, -1));
 
-        txt_bookId.setBackground(new java.awt.Color(102, 102, 255));
+        txt_bookId.setEditable(false);
+        txt_bookId.setBackground(new java.awt.Color(204, 204, 204));
         txt_bookId.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(255, 255, 255)));
-        txt_bookId.setFont(new java.awt.Font("Segoe UI", 0, 17)); // NOI18N
+        txt_bookId.setFont(new java.awt.Font("Segoe UI", 1, 17)); // NOI18N
         txt_bookId.setPlaceholder("Enter Book ID");
         txt_bookId.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 txt_bookIdFocusLost(evt);
+            }
+        });
+        txt_bookId.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                txt_bookIdMouseClicked(evt);
             }
         });
         txt_bookId.addActionListener(this::txt_bookIdActionPerformed);
@@ -331,6 +337,7 @@ public class ManageBooks extends javax.swing.JFrame {
 
     private void txt_bookIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_bookIdActionPerformed
         // TODO add your handling code here:
+        
     }//GEN-LAST:event_txt_bookIdActionPerformed
 
     private void txt_bookNameFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_bookNameFocusLost
@@ -359,31 +366,150 @@ public class ManageBooks extends javax.swing.JFrame {
 
     private void rSMaterialButtonCircle1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rSMaterialButtonCircle1ActionPerformed
         // TODO add your handling code here:
+        // 1️⃣ Validate selection
+    if (txt_bookId.getText().trim().isEmpty()) {
+        JOptionPane.showMessageDialog(this, 
+                "Please select a book first!",
+                "Warning",
+                JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+
+    int id;
+
+    // 2️⃣ Validate ID format
+    try {
+        id = Integer.parseInt(txt_bookId.getText().trim());
+
+        if (id <= 0) {
+            JOptionPane.showMessageDialog(this, 
+                    "Invalid Book ID!",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, 
+                "Book ID must be a valid number!",
+                "Error",
+                JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+    // 3️⃣ Confirmation dialog
+    int confirm = JOptionPane.showConfirmDialog(
+            this,
+            "Are you sure you want to delete this book?",
+            "Confirm Delete",
+            JOptionPane.YES_NO_OPTION,
+            JOptionPane.QUESTION_MESSAGE
+    );
+
+    // 4️⃣ If user clicked YES
+    if (confirm == JOptionPane.YES_OPTION) {
+
+        BookDAO bookDAO = new BookDAO();
+
+        if (bookDAO.deleteBook(id)) {
+            JOptionPane.showMessageDialog(this,
+                    "Book deleted successfully!",
+                    "Success",
+                    JOptionPane.INFORMATION_MESSAGE);
+
+            clearFields();
+            loadBooksToTable();
+
+        } else {
+            JOptionPane.showMessageDialog(this,
+                    "Delete failed! Book may not exist.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
     }//GEN-LAST:event_rSMaterialButtonCircle1ActionPerformed
 
     private void rSMaterialButtonCircle2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rSMaterialButtonCircle2ActionPerformed
         // TODO add your handling code here:
-        
-        Book book = new Book(
-        Integer.parseInt(txt_bookId.getText()),
-        txt_bookName.getText(),
-        txt_authorName.getText(),
-        Integer.parseInt(txt_quantity.getText())
-    );
+         // 1️⃣ Validate fields
+    String title = txt_bookName.getText().trim();
+    String author = txt_authorName.getText().trim();
+    String quantityText = txt_quantity.getText().trim();
+
+    if (title.isEmpty()) {
+        JOptionPane.showMessageDialog(this,
+                "Book title is required!",
+                "Validation Error",
+                JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+
+    if (author.isEmpty()) {
+        JOptionPane.showMessageDialog(this,
+                "Author name is required!",
+                "Validation Error",
+                JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+
+    if (quantityText.isEmpty()) {
+        JOptionPane.showMessageDialog(this,
+                "Quantity is required!",
+                "Validation Error",
+                JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+
+    int quantity;
+
+    try {
+        quantity = Integer.parseInt(quantityText);
+
+        if (quantity < 0) {
+            JOptionPane.showMessageDialog(this,
+                    "Quantity cannot be negative!",
+                    "Validation Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this,
+                "Quantity must be a valid number!",
+                "Validation Error",
+                JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+    // 2️⃣ Create Book object (NO ID for add)
+    Book book = new Book(title, author, quantity);
 
     BookDAO dao = new BookDAO();
-    if (dao.isBookExists(book.getTitle(), book.getAuthor())) {
-    JOptionPane.showMessageDialog(this, "Book already exists!");
-    
-} 
-else if (dao.addBook(book)) {
-    JOptionPane.showMessageDialog(this, "Book added successfully!");
-    loadBooksToTable();
-    clearFields();
-} 
-else {
-    JOptionPane.showMessageDialog(this, "Error while adding book.");
-}
+
+    // 3️⃣ Check duplicate
+    if (dao.isBookExists(title, author)) {
+        JOptionPane.showMessageDialog(this,
+                "This book already exists!",
+                "Duplicate Error",
+                JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+
+    // 4️⃣ Insert
+    if (dao.addBook(book)) {
+        JOptionPane.showMessageDialog(this,
+                "Book added successfully!",
+                "Success",
+                JOptionPane.INFORMATION_MESSAGE);
+
+        loadBooksToTable();
+        clearFields();
+    } else {
+        JOptionPane.showMessageDialog(this,
+                "Error while adding book.",
+                "Database Error",
+                JOptionPane.ERROR_MESSAGE);
+    }
     }//GEN-LAST:event_rSMaterialButtonCircle2ActionPerformed
 
     private void clearFields() {
@@ -393,27 +519,107 @@ else {
     txt_quantity.setText("");
 }
     private void rSMaterialButtonCircle3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rSMaterialButtonCircle3ActionPerformed
-        // TODO add your handling code here:
-        if (txt_bookId.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Please select a book first!");
-    return;
-}
+         // TODO add your handling code here:
+        // 1️⃣ Validate ID
+    String idText = txt_bookId.getText().trim();
 
-        int id = Integer.parseInt(txt_bookId.getText());
-        String title = txt_bookName.getText();
-        String author = txt_authorName.getText();
-        int quantity = Integer.parseInt(txt_quantity.getText());
-        Book book = new Book(id,title,author,quantity);
-        BookDAO bookDAO = new BookDAO();
-        if (bookDAO.updateBook(book)) {
-            JOptionPane.showMessageDialog(this, "Book Updated Successfully!");
-            clearFields();
-            loadBooksToTable();
-            
+    if (idText.isEmpty()) {
+        JOptionPane.showMessageDialog(this,
+                "Please select a book first!",
+                "Validation Error",
+                JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+
+    int id;
+
+    try {
+        id = Integer.parseInt(idText);
+        if (id <= 0) {
+            JOptionPane.showMessageDialog(this,
+                    "Invalid Book ID!",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
         }
-        else{
-             JOptionPane.showMessageDialog(this, "Update Failed!");
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this,
+                "Invalid ID format!",
+                "Error",
+                JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+    // 2️⃣ Validate other fields
+    String title = txt_bookName.getText().trim();
+    String author = txt_authorName.getText().trim();
+    String quantityText = txt_quantity.getText().trim();
+
+    if (title.isEmpty()) {
+        JOptionPane.showMessageDialog(this,
+                "Title cannot be empty!",
+                "Validation Error",
+                JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+
+    if (author.isEmpty()) {
+        JOptionPane.showMessageDialog(this,
+                "Author cannot be empty!",
+                "Validation Error",
+                JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+
+    if (quantityText.isEmpty()) {
+        JOptionPane.showMessageDialog(this,
+                "Quantity is required!",
+                "Validation Error",
+                JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+
+    int quantity;
+
+    try {
+        quantity = Integer.parseInt(quantityText);
+
+        if (quantity < 0) {
+            JOptionPane.showMessageDialog(this,
+                    "Quantity cannot be negative!",
+                    "Validation Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
         }
+
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this,
+                "Quantity must be a valid number!",
+                "Validation Error",
+                JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+    // 3️⃣ Create object
+    Book book = new Book(id, title, author, quantity);
+    BookDAO bookDAO = new BookDAO();
+    
+
+    // 4️⃣ Update
+    if (bookDAO.updateBook(book)) {
+        JOptionPane.showMessageDialog(this,
+                "Book updated successfully!",
+                "Success",
+                JOptionPane.INFORMATION_MESSAGE);
+
+        clearFields();
+        loadBooksToTable();
+    } else {
+        JOptionPane.showMessageDialog(this,
+                "Update failed! Book may not exist.",
+                "Error",
+                JOptionPane.ERROR_MESSAGE);
+    }
     }//GEN-LAST:event_rSMaterialButtonCircle3ActionPerformed
 
     private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
@@ -449,6 +655,11 @@ else {
             javax.swing.JOptionPane.ERROR_MESSAGE);
     }
     }//GEN-LAST:event_rSTableMetro2MouseClicked
+
+    private void txt_bookIdMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txt_bookIdMouseClicked
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_txt_bookIdMouseClicked
 
     /**
      * @param args the command line arguments

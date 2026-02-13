@@ -107,6 +107,21 @@ public boolean updateBook(Book book) {
         return false;
     }
 }
+public boolean deleteBook(int id){
+    String sql = "DELETE FROM books where id =?";
+    try {
+        Connection con = DBconnection.getConnection();
+        PreparedStatement pst = con.prepareStatement(sql);
+        pst.setInt(1, id);
+        return pst.executeUpdate()>0;
+        
+        
+    } catch (Exception e) {
+        e.printStackTrace();
+        return false;
+    }
+    
+}
 
 
 
