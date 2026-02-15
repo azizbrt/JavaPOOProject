@@ -17,18 +17,54 @@ import org.jfree.data.general.DefaultPieDataset;
  * @author azizb
  */
 public class HomePage extends javax.swing.JFrame {
+    // Theme Colors
+private final Color SIDEBAR_DEFAULT = new Color(45, 52, 54);      // dark modern gray
+private final Color SIDEBAR_HOVER = new Color(9, 132, 227);       // blue hover
+private final Color SIDEBAR_ACTIVE = new Color(214, 48, 49);      // red active
+private final Color TEXT_DEFAULT = new Color(178, 190, 195);      // light gray text
+private final Color TEXT_HOVER = Color.WHITE;
+
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(HomePage.class.getName());
 
     /**
      * Creates new form HomePage
      */
+    Color mouseEnterColor = new Color(0,0,0);
+    Color mouseExitColor = new Color(51,51,51);
     public HomePage() {
         initComponents();
+        addHoverEffect(jPanel7, jLabel8);
+        addHoverEffect(jPanel9, jLabel10);
+
+
         setSize(1200, 700);  // your real size
         setLocationRelativeTo(null);
         showPieChart();
     }
+    private void addHoverEffect(javax.swing.JPanel panel, javax.swing.JLabel label) {
+
+    panel.setBackground(SIDEBAR_DEFAULT);
+    label.setForeground(TEXT_DEFAULT);
+    label.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+
+
+    label.addMouseListener(new java.awt.event.MouseAdapter() {
+
+        @Override
+        public void mouseEntered(java.awt.event.MouseEvent evt) {
+            panel.setBackground(SIDEBAR_HOVER);
+            label.setForeground(TEXT_HOVER);
+        }
+
+        @Override
+        public void mouseExited(java.awt.event.MouseEvent evt) {
+            panel.setBackground(SIDEBAR_DEFAULT);
+            label.setForeground(TEXT_DEFAULT);
+        }
+    });
+}
+
     public void showPieChart(){
         
         //create dataset
@@ -228,6 +264,12 @@ public class HomePage extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel10MouseClicked(evt);
             }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jLabel10MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jLabel10MouseExited(evt);
+            }
         });
         jPanel9.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, 180, -1));
 
@@ -240,6 +282,14 @@ public class HomePage extends javax.swing.JFrame {
         jLabel8.setForeground(new java.awt.Color(153, 153, 153));
         jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adminIcons/adminIcons/icons8_Read_Online_26px.png"))); // NOI18N
         jLabel8.setText("Manage student");
+        jLabel8.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jLabel8MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jLabel8MouseExited(evt);
+            }
+        });
         jPanel7.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 0, -1, -1));
 
         jPanel3.add(jPanel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 280, 340, 60));
@@ -544,6 +594,27 @@ public class HomePage extends javax.swing.JFrame {
         books.setVisible(true);
         dispose();
     }//GEN-LAST:event_jLabel10MouseClicked
+
+    private void jLabel10MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel10MouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabel10MouseEntered
+
+    private void jLabel10MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel10MouseExited
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_jLabel10MouseExited
+
+    private void jLabel8MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel8MouseEntered
+        // TODO add your handling code here:
+      
+
+        
+    }//GEN-LAST:event_jLabel8MouseEntered
+
+    private void jLabel8MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel8MouseExited
+        // TODO add your handling code here:
+      
+    }//GEN-LAST:event_jLabel8MouseExited
 
     /**
      * @param args the command line arguments

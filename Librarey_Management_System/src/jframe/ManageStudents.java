@@ -5,42 +5,42 @@
 package jframe;
 
 import dao.BookDAO;
+import dao.StudentDAO;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import model.Book;
+import model.Student;
 
 
 /**
  *
  * @author azizb
  */
-public class ManageBooks extends javax.swing.JFrame {
+public class ManageStudents extends javax.swing.JFrame {
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(ManageBooks.class.getName());
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(ManageStudents.class.getName());
 
     /**
      * Creates new form ManageBooks
      */
-    public ManageBooks() {
+    public ManageStudents() {
         initComponents();
-        loadBooksToTable();
+        loadStudentsToTable();
     }
-    
-    private void loadBooksToTable() {
+    private void loadStudentsToTable() {
 
-        BookDAO dao = new BookDAO();
-    java.util.List<Book> bookList = dao.getAllBooks();
+        StudentDAO dao = new StudentDAO();
+    java.util.List<Student> studentList = dao.getAllStudents();
 
-    DefaultTableModel model = (DefaultTableModel) rSTableMetro2.getModel();
+    DefaultTableModel model = (DefaultTableModel) tbl_studentDetails.getModel();
     model.setRowCount(0); // clear old data
 
-    for (Book b : bookList) {
+    for (Student b : studentList) {
 
         Object[] row = {
-            b.getId(),
-            b.getTitle(),
-            b.getAuthor(),
-            b.getQuantity()
+            b.getStudentId(),
+            b.getStudentName(),
+            b.getCourse(),
+            b.getBranch()
         };
 
         model.addRow(row);
@@ -61,27 +61,27 @@ public class ManageBooks extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
-        txt_bookId = new app.bolivia.swing.JCTextField();
+        txt_studentId = new app.bolivia.swing.JCTextField();
         jLabel3 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        txt_bookName = new app.bolivia.swing.JCTextField();
+        txt_studentName = new app.bolivia.swing.JCTextField();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
-        txt_authorName = new app.bolivia.swing.JCTextField();
         jLabel6 = new javax.swing.JLabel();
-        txt_quantity = new app.bolivia.swing.JCTextField();
         rSMaterialButtonCircle1 = new necesario.RSMaterialButtonCircle();
         rSMaterialButtonCircle2 = new necesario.RSMaterialButtonCircle();
         rSMaterialButtonCircle3 = new necesario.RSMaterialButtonCircle();
         jPanel5 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
+        combo_branch = new javax.swing.JComboBox<>();
+        combo_courseName = new javax.swing.JComboBox<>();
         jPanel4 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        rSTableMetro2 = new rojerusan.RSTableMetro();
+        tbl_studentDetails = new rojerusan.RSTableMetro();
         jLabel7 = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
 
@@ -94,26 +94,26 @@ public class ManageBooks extends javax.swing.JFrame {
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 0, 17)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel8.setText("Enter Book ID:");
+        jLabel8.setText("Student ID:");
         jPanel2.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 80, 260, -1));
 
-        txt_bookId.setEditable(false);
-        txt_bookId.setBackground(new java.awt.Color(204, 204, 204));
-        txt_bookId.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(255, 255, 255)));
-        txt_bookId.setFont(new java.awt.Font("Segoe UI", 1, 17)); // NOI18N
-        txt_bookId.setPlaceholder("Enter Book ID");
-        txt_bookId.addFocusListener(new java.awt.event.FocusAdapter() {
+        txt_studentId.setEditable(false);
+        txt_studentId.setBackground(new java.awt.Color(204, 204, 204));
+        txt_studentId.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(255, 255, 255)));
+        txt_studentId.setFont(new java.awt.Font("Segoe UI", 1, 17)); // NOI18N
+        txt_studentId.setPlaceholder("Enter Book ID");
+        txt_studentId.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
-                txt_bookIdFocusLost(evt);
+                txt_studentIdFocusLost(evt);
             }
         });
-        txt_bookId.addMouseListener(new java.awt.event.MouseAdapter() {
+        txt_studentId.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                txt_bookIdMouseClicked(evt);
+                txt_studentIdMouseClicked(evt);
             }
         });
-        txt_bookId.addActionListener(this::txt_bookIdActionPerformed);
-        jPanel2.add(txt_bookId, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 120, 190, -1));
+        txt_studentId.addActionListener(this::txt_studentIdActionPerformed);
+        jPanel2.add(txt_studentId, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 120, 190, -1));
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 17)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
@@ -122,20 +122,20 @@ public class ManageBooks extends javax.swing.JFrame {
 
         jLabel9.setFont(new java.awt.Font("Tahoma", 0, 17)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel9.setText("Enter Book Name:");
+        jLabel9.setText("Enter Student Name:");
         jPanel2.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 190, 290, -1));
 
-        txt_bookName.setBackground(new java.awt.Color(102, 102, 255));
-        txt_bookName.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(255, 255, 255)));
-        txt_bookName.setFont(new java.awt.Font("Segoe UI", 0, 17)); // NOI18N
-        txt_bookName.setPlaceholder("Enter Book Name");
-        txt_bookName.addFocusListener(new java.awt.event.FocusAdapter() {
+        txt_studentName.setBackground(new java.awt.Color(102, 102, 255));
+        txt_studentName.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(255, 255, 255)));
+        txt_studentName.setFont(new java.awt.Font("Segoe UI", 0, 17)); // NOI18N
+        txt_studentName.setPlaceholder("Enter Student Name");
+        txt_studentName.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
-                txt_bookNameFocusLost(evt);
+                txt_studentNameFocusLost(evt);
             }
         });
-        txt_bookName.addActionListener(this::txt_bookNameActionPerformed);
-        jPanel2.add(txt_bookName, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 250, 190, -1));
+        txt_studentName.addActionListener(this::txt_studentNameActionPerformed);
+        jPanel2.add(txt_studentName, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 250, 190, -1));
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 17)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
@@ -149,37 +149,13 @@ public class ManageBooks extends javax.swing.JFrame {
 
         jLabel10.setFont(new java.awt.Font("Tahoma", 0, 17)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel10.setText("Author Name:");
-        jPanel2.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 320, 290, -1));
-
-        txt_authorName.setBackground(new java.awt.Color(102, 102, 255));
-        txt_authorName.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(255, 255, 255)));
-        txt_authorName.setFont(new java.awt.Font("Segoe UI", 0, 17)); // NOI18N
-        txt_authorName.setPlaceholder("Author Name");
-        txt_authorName.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                txt_authorNameFocusLost(evt);
-            }
-        });
-        txt_authorName.addActionListener(this::txt_authorNameActionPerformed);
-        jPanel2.add(txt_authorName, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 370, 190, -1));
+        jLabel10.setText("Select Course:");
+        jPanel2.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 320, 290, -1));
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 0, 17)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/AddNewBookIcons/AddNewBookIcons/icons8_Unit_26px.png"))); // NOI18N
         jPanel2.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 470, 60, 40));
-
-        txt_quantity.setBackground(new java.awt.Color(102, 102, 255));
-        txt_quantity.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(255, 255, 255)));
-        txt_quantity.setFont(new java.awt.Font("Segoe UI", 0, 17)); // NOI18N
-        txt_quantity.setPlaceholder("Quantity");
-        txt_quantity.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                txt_quantityFocusLost(evt);
-            }
-        });
-        txt_quantity.addActionListener(this::txt_quantityActionPerformed);
-        jPanel2.add(txt_quantity, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 480, 190, -1));
 
         rSMaterialButtonCircle1.setBackground(new java.awt.Color(255, 51, 51));
         rSMaterialButtonCircle1.setText("delete");
@@ -229,8 +205,16 @@ public class ManageBooks extends javax.swing.JFrame {
 
         jLabel12.setFont(new java.awt.Font("Tahoma", 0, 17)); // NOI18N
         jLabel12.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel12.setText("Quantity:");
+        jLabel12.setText("Select Branch");
         jPanel2.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 440, 290, -1));
+
+        combo_branch.setFont(new java.awt.Font("Verdana", 0, 17)); // NOI18N
+        combo_branch.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "select a Branch", "IT", "GL", "GM", "GC", " ", " " }));
+        jPanel2.add(combo_branch, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 480, 220, 40));
+
+        combo_courseName.setFont(new java.awt.Font("Verdana", 0, 17)); // NOI18N
+        combo_courseName.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select a course", "PCAP", "RHCA", "PHP", " " }));
+        jPanel2.add(combo_courseName, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 380, 220, 40));
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 350, 830));
 
@@ -268,7 +252,7 @@ public class ManageBooks extends javax.swing.JFrame {
 
         jPanel4.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 0, 40, 40));
 
-        rSTableMetro2.setModel(new javax.swing.table.DefaultTableModel(
+        tbl_studentDetails.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {"1", "zere", "abc", "zez"},
                 {null, null, null, null},
@@ -277,31 +261,31 @@ public class ManageBooks extends javax.swing.JFrame {
                 {null, null, null, null}
             },
             new String [] {
-                "Book ID", "Name", "Author", "Quantity"
+                "Student ID", "Name", "Course", "Branche"
             }
         ));
-        rSTableMetro2.setColorBackgoundHead(new java.awt.Color(102, 102, 255));
-        rSTableMetro2.setColorBordeFilas(new java.awt.Color(102, 102, 255));
-        rSTableMetro2.setColorFilasBackgound2(new java.awt.Color(255, 255, 255));
-        rSTableMetro2.setColorSelBackgound(new java.awt.Color(255, 51, 51));
-        rSTableMetro2.setFont(new java.awt.Font("Yu Gothic UI Light", 0, 25)); // NOI18N
-        rSTableMetro2.setFuenteFilas(new java.awt.Font("Yu Gothic UI Semibold", 0, 18)); // NOI18N
-        rSTableMetro2.setFuenteFilasSelect(new java.awt.Font("Yu Gothic UI", 1, 20)); // NOI18N
-        rSTableMetro2.setFuenteHead(new java.awt.Font("Yu Gothic UI Semibold", 1, 20)); // NOI18N
-        rSTableMetro2.setRowHeight(40);
-        rSTableMetro2.addMouseListener(new java.awt.event.MouseAdapter() {
+        tbl_studentDetails.setColorBackgoundHead(new java.awt.Color(102, 102, 255));
+        tbl_studentDetails.setColorBordeFilas(new java.awt.Color(102, 102, 255));
+        tbl_studentDetails.setColorFilasBackgound2(new java.awt.Color(255, 255, 255));
+        tbl_studentDetails.setColorSelBackgound(new java.awt.Color(255, 51, 51));
+        tbl_studentDetails.setFont(new java.awt.Font("Yu Gothic UI Light", 0, 25)); // NOI18N
+        tbl_studentDetails.setFuenteFilas(new java.awt.Font("Yu Gothic UI Semibold", 0, 18)); // NOI18N
+        tbl_studentDetails.setFuenteFilasSelect(new java.awt.Font("Yu Gothic UI", 1, 20)); // NOI18N
+        tbl_studentDetails.setFuenteHead(new java.awt.Font("Yu Gothic UI Semibold", 1, 20)); // NOI18N
+        tbl_studentDetails.setRowHeight(40);
+        tbl_studentDetails.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                rSTableMetro2MouseClicked(evt);
+                tbl_studentDetailsMouseClicked(evt);
             }
         });
-        jScrollPane2.setViewportView(rSTableMetro2);
+        jScrollPane2.setViewportView(tbl_studentDetails);
 
         jPanel4.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 200, 620, 250));
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 30)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 51, 51));
-        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/AddNewBookIcons/AddNewBookIcons/icons8_Books_52px_1.png"))); // NOI18N
-        jLabel7.setText("Manage Books");
+        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/AddNewBookIcons/AddNewBookIcons/icons8_Student_Male_100px.png"))); // NOI18N
+        jLabel7.setText("Manage Students");
         jPanel4.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 20, -1, -1));
 
         jPanel6.setBackground(new java.awt.Color(255, 51, 51));
@@ -317,7 +301,7 @@ public class ManageBooks extends javax.swing.JFrame {
             .addGap(0, 5, Short.MAX_VALUE)
         );
 
-        jPanel4.add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 75, 410, 5));
+        jPanel4.add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 120, 410, 5));
 
         jPanel1.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 0, 1380, 830));
 
@@ -332,43 +316,27 @@ public class ManageBooks extends javax.swing.JFrame {
         System.exit(0);
     }//GEN-LAST:event_jLabel1MouseClicked
 
-    private void txt_bookIdFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_bookIdFocusLost
+    private void txt_studentIdFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_studentIdFocusLost
 
-    }//GEN-LAST:event_txt_bookIdFocusLost
+    }//GEN-LAST:event_txt_studentIdFocusLost
 
-    private void txt_bookIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_bookIdActionPerformed
+    private void txt_studentIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_studentIdActionPerformed
         // TODO add your handling code here:
         
-    }//GEN-LAST:event_txt_bookIdActionPerformed
+    }//GEN-LAST:event_txt_studentIdActionPerformed
 
-    private void txt_bookNameFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_bookNameFocusLost
+    private void txt_studentNameFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_studentNameFocusLost
 
-    }//GEN-LAST:event_txt_bookNameFocusLost
+    }//GEN-LAST:event_txt_studentNameFocusLost
 
-    private void txt_bookNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_bookNameActionPerformed
+    private void txt_studentNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_studentNameActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txt_bookNameActionPerformed
-
-    private void txt_authorNameFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_authorNameFocusLost
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txt_authorNameFocusLost
-
-    private void txt_authorNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_authorNameActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txt_authorNameActionPerformed
-
-    private void txt_quantityFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_quantityFocusLost
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txt_quantityFocusLost
-
-    private void txt_quantityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_quantityActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txt_quantityActionPerformed
+    }//GEN-LAST:event_txt_studentNameActionPerformed
 
     private void rSMaterialButtonCircle1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rSMaterialButtonCircle1ActionPerformed
         // TODO add your handling code here:
         // 1️⃣ Validate selection
-    if (txt_bookId.getText().trim().isEmpty()) {
+    if (txt_studentId.getText().trim().isEmpty()) {
         JOptionPane.showMessageDialog(this, 
                 "Please select a book first!",
                 "Warning",
@@ -380,7 +348,7 @@ public class ManageBooks extends javax.swing.JFrame {
 
     // 2️⃣ Validate ID format
     try {
-        id = Integer.parseInt(txt_bookId.getText().trim());
+        id = Integer.parseInt(txt_studentId.getText().trim());
 
         if (id <= 0) {
             JOptionPane.showMessageDialog(this, 
@@ -410,20 +378,20 @@ public class ManageBooks extends javax.swing.JFrame {
     // 4️⃣ If user clicked YES
     if (confirm == JOptionPane.YES_OPTION) {
 
-        BookDAO bookDAO = new BookDAO();
+        StudentDAO studentDAO = new StudentDAO();
 
-        if (bookDAO.deleteBook(id)) {
+        if (studentDAO.deleteStudent(id)) {
             JOptionPane.showMessageDialog(this,
-                    "Book deleted successfully!",
+                    "Student deleted successfully!",
                     "Success",
                     JOptionPane.INFORMATION_MESSAGE);
 
             clearFields();
-            loadBooksToTable();
+            loadStudentsToTable();
 
         } else {
             JOptionPane.showMessageDialog(this,
-                    "Delete failed! Book may not exist.",
+                    "Delete failed! Student may not exist.",
                     "Error",
                     JOptionPane.ERROR_MESSAGE);
         }
@@ -433,100 +401,80 @@ public class ManageBooks extends javax.swing.JFrame {
     private void rSMaterialButtonCircle2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rSMaterialButtonCircle2ActionPerformed
         // TODO add your handling code here:
          // 1️⃣ Validate fields
-    String title = txt_bookName.getText().trim();
-    String author = txt_authorName.getText().trim();
-    String quantityText = txt_quantity.getText().trim();
-
-    if (title.isEmpty()) {
+    String studentName = txt_studentName.getText().trim();
+    String course = combo_courseName.getSelectedItem().toString().trim();
+    String branch = combo_branch.getSelectedItem().toString().trim();
+    if (studentName.isEmpty()) {
         JOptionPane.showMessageDialog(this,
-                "Book title is required!",
+                "Student name cannot be empty!",
                 "Validation Error",
                 JOptionPane.WARNING_MESSAGE);
         return;
     }
 
-    if (author.isEmpty()) {
+    if (combo_courseName.getSelectedIndex() == 0) {
         JOptionPane.showMessageDialog(this,
-                "Author name is required!",
+                "Please select a course!",
                 "Validation Error",
                 JOptionPane.WARNING_MESSAGE);
         return;
     }
 
-    if (quantityText.isEmpty()) {
+    if (combo_branch.getSelectedIndex()== 0) {
         JOptionPane.showMessageDialog(this,
-                "Quantity is required!",
+                "Please select a branch!",
                 "Validation Error",
                 JOptionPane.WARNING_MESSAGE);
         return;
     }
 
-    int quantity;
-
-    try {
-        quantity = Integer.parseInt(quantityText);
-
-        if (quantity < 0) {
-            JOptionPane.showMessageDialog(this,
-                    "Quantity cannot be negative!",
-                    "Validation Error",
-                    JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-    } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this,
-                "Quantity must be a valid number!",
-                "Validation Error",
-                JOptionPane.ERROR_MESSAGE);
-        return;
-    }
+    
 
     // 2️⃣ Create Book object (NO ID for add)
-    Book book = new Book(title, author, quantity);
+    Student student = new Student(studentName, course, branch);
 
-    BookDAO dao = new BookDAO();
+    StudentDAO dao = new StudentDAO();
 
     // 3️⃣ Check duplicate
-    if (dao.isBookExists(title, author)) {
+    if (dao.isStudentExists(studentName, course)) {
         JOptionPane.showMessageDialog(this,
-                "This book already exists!",
+                "This student already exists!",
                 "Duplicate Error",
                 JOptionPane.WARNING_MESSAGE);
         return;
     }
 
     // 4️⃣ Insert
-    if (dao.addBook(book)) {
+    if (dao.addStudent(student)) {
         JOptionPane.showMessageDialog(this,
-                "Book added successfully!",
+                "Student added successfully!",
                 "Success",
                 JOptionPane.INFORMATION_MESSAGE);
 
-        loadBooksToTable();
+        loadStudentsToTable();
         clearFields();
     } else {
         JOptionPane.showMessageDialog(this,
-                "Error while adding book.",
+                "Error while adding Student.",
                 "Database Error",
                 JOptionPane.ERROR_MESSAGE);
     }
     }//GEN-LAST:event_rSMaterialButtonCircle2ActionPerformed
 
     private void clearFields() {
-    txt_bookId.setText("");
-    txt_bookName.setText("");
-    txt_authorName.setText("");
-    txt_quantity.setText("");
+    txt_studentId.setText("");
+    txt_studentName.setText("");
+    combo_courseName.setSelectedIndex(0);
+    combo_branch.setSelectedIndex(0);
 }
     private void rSMaterialButtonCircle3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rSMaterialButtonCircle3ActionPerformed
          // TODO add your handling code here:
         // 1️⃣ Validate ID
-    String idText = txt_bookId.getText().trim();
+    String idText = txt_studentId.getText().trim();
 
     if (idText.isEmpty()) {
         JOptionPane.showMessageDialog(this,
-                "Please select a book first!",
+                "Please select a student first!",
                 "Validation Error",
                 JOptionPane.WARNING_MESSAGE);
         return;
@@ -538,7 +486,7 @@ public class ManageBooks extends javax.swing.JFrame {
         id = Integer.parseInt(idText);
         if (id <= 0) {
             JOptionPane.showMessageDialog(this,
-                    "Invalid Book ID!",
+                    "Invalid student ID!",
                     "Error",
                     JOptionPane.ERROR_MESSAGE);
             return;
@@ -552,72 +500,42 @@ public class ManageBooks extends javax.swing.JFrame {
     }
 
     // 2️⃣ Validate other fields
-    String title = txt_bookName.getText().trim();
-    String author = txt_authorName.getText().trim();
-    String quantityText = txt_quantity.getText().trim();
+       String studentName = txt_studentName.getText().trim();
+        String course = combo_courseName.getSelectedItem().toString().trim();
+        String branch = combo_branch.getSelectedItem().toString().trim();
 
-    if (title.isEmpty()) {
+    if (studentName.isEmpty()) {
         JOptionPane.showMessageDialog(this,
-                "Title cannot be empty!",
+                "student name cannot be empty!",
                 "Validation Error",
                 JOptionPane.WARNING_MESSAGE);
         return;
     }
 
-    if (author.isEmpty()) {
-        JOptionPane.showMessageDialog(this,
-                "Author cannot be empty!",
-                "Validation Error",
-                JOptionPane.WARNING_MESSAGE);
-        return;
-    }
+    
+    
+    System.out.println("Updating ID: " + id);
+    
 
-    if (quantityText.isEmpty()) {
-        JOptionPane.showMessageDialog(this,
-                "Quantity is required!",
-                "Validation Error",
-                JOptionPane.WARNING_MESSAGE);
-        return;
-    }
-
-    int quantity;
-
-    try {
-        quantity = Integer.parseInt(quantityText);
-
-        if (quantity < 0) {
-            JOptionPane.showMessageDialog(this,
-                    "Quantity cannot be negative!",
-                    "Validation Error",
-                    JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-    } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this,
-                "Quantity must be a valid number!",
-                "Validation Error",
-                JOptionPane.ERROR_MESSAGE);
-        return;
-    }
+    
 
     // 3️⃣ Create object
-    Book book = new Book(id, title, author, quantity);
-    BookDAO bookDAO = new BookDAO();
+    Student student = new Student(id, studentName, course, branch);
+    StudentDAO studentDAO = new StudentDAO();
     
 
     // 4️⃣ Update
-    if (bookDAO.updateBook(book)) {
+    if (studentDAO.updateStudent(student)) {
         JOptionPane.showMessageDialog(this,
-                "Book updated successfully!",
+                "student updated successfully!",
                 "Success",
                 JOptionPane.INFORMATION_MESSAGE);
 
         clearFields();
-        loadBooksToTable();
+        loadStudentsToTable();
     } else {
         JOptionPane.showMessageDialog(this,
-                "Update failed! Book may not exist.",
+                "Update failed! student may not exist.",
                 "Error",
                 JOptionPane.ERROR_MESSAGE);
     }
@@ -630,37 +548,43 @@ public class ManageBooks extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_jLabel2MouseClicked
 
-    private void rSTableMetro2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rSTableMetro2MouseClicked
+    private void tbl_studentDetailsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_studentDetailsMouseClicked
         // TODO add your handling code here:
         try {
-        int rowNo = rSTableMetro2.getSelectedRow();
+        int rowNo = tbl_studentDetails.getSelectedRow();
         
         // Validate row selection
         if (rowNo < 0) {
             return;
         }
         
-        DefaultTableModel model = (DefaultTableModel) rSTableMetro2.getModel();
+        DefaultTableModel model = (DefaultTableModel) tbl_studentDetails.getModel();
         
         // Populate form fields from selected row
         // Table Column order: Book ID(0), Name(1), Author(2), Quantity(4)
-        txt_bookId.setText(model.getValueAt(rowNo, 0).toString());
-        txt_bookName.setText(model.getValueAt(rowNo, 1).toString());
-        txt_authorName.setText(model.getValueAt(rowNo, 2).toString());
-        txt_quantity.setText(model.getValueAt(rowNo, 3).toString());          
+        String id = model.getValueAt(rowNo, 0).toString();
+        String name = model.getValueAt(rowNo, 1).toString();
+        String course = model.getValueAt(rowNo, 2).toString();
+        String branch = model.getValueAt(rowNo, 3).toString();
+        
+        
+      txt_studentId.setText(id);
+      txt_studentName.setText(name);
+      combo_courseName.setSelectedItem(course);
+      combo_branch.setSelectedItem(branch);
         
     } catch (Exception e) {
-        javax.swing.JOptionPane.showMessageDialog(this, 
-            "Error loading book details. Please try again.", 
-            "Error", 
-            javax.swing.JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(this,
+                "Error loading student details.",
+                "Error",
+                JOptionPane.ERROR_MESSAGE);
     }
-    }//GEN-LAST:event_rSTableMetro2MouseClicked
+    }//GEN-LAST:event_tbl_studentDetailsMouseClicked
 
-    private void txt_bookIdMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txt_bookIdMouseClicked
+    private void txt_studentIdMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txt_studentIdMouseClicked
         // TODO add your handling code here:
         
-    }//GEN-LAST:event_txt_bookIdMouseClicked
+    }//GEN-LAST:event_txt_studentIdMouseClicked
 
     /**
      * @param args the command line arguments
@@ -684,10 +608,12 @@ public class ManageBooks extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new ManageBooks().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> new ManageStudents().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> combo_branch;
+    private javax.swing.JComboBox<String> combo_courseName;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel12;
@@ -709,10 +635,8 @@ public class ManageBooks extends javax.swing.JFrame {
     private necesario.RSMaterialButtonCircle rSMaterialButtonCircle1;
     private necesario.RSMaterialButtonCircle rSMaterialButtonCircle2;
     private necesario.RSMaterialButtonCircle rSMaterialButtonCircle3;
-    private rojerusan.RSTableMetro rSTableMetro2;
-    private app.bolivia.swing.JCTextField txt_authorName;
-    private app.bolivia.swing.JCTextField txt_bookId;
-    private app.bolivia.swing.JCTextField txt_bookName;
-    private app.bolivia.swing.JCTextField txt_quantity;
+    private rojerusan.RSTableMetro tbl_studentDetails;
+    private app.bolivia.swing.JCTextField txt_studentId;
+    private app.bolivia.swing.JCTextField txt_studentName;
     // End of variables declaration//GEN-END:variables
 }

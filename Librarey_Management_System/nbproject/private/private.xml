@@ -6,6 +6,10 @@
             <file>file:/C:/projet%20JAVA/Librarey_Management_System/src/librarey_management_system/Librarey_Management_System.java</file>
             <file>file:/C:/projet%20JAVA/Librarey_Management_System/src/jframe/SignupPage.java</file>
             <file>file:/C:/projet%20JAVA/Librarey_Management_System/src/jframe/DBconnection.java</file>
+            <file>file:/C:/projet%20JAVA/Librarey_Management_System/src/jframe/ManageBooks.java</file>
+            <file>file:/C:/projet%20JAVA/Librarey_Management_System/src/dao/BookDAO.java</file>
+            <file>file:/C:/projet%20JAVA/Librarey_Management_System/src/dao/UserDAO.java</file>
+            <file>file:/C:/projet%20JAVA/Librarey_Management_System/src/model/Book.java</file>
         </group>
     </open-files>
 </project-private>
