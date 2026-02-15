@@ -127,5 +127,32 @@ public boolean deleteStudent(int id){
     }
     
 }
+public Student getStudentById(int id) {
+
+    String sql = "SELECT * FROM student_details WHERE student_id = ?";
+
+    try (Connection con = DBconnection.getConnection();
+         PreparedStatement pst = con.prepareStatement(sql)) {
+
+        pst.setInt(1, id);
+
+        ResultSet rs = pst.executeQuery();
+
+        if (rs.next()) {
+
+            return new Student(
+                    rs.getInt("student_id"),
+                    rs.getString("student_name"),
+                    rs.getString("course"),
+                    rs.getString("branch")
+            );
+        }
+
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+
+    return null;  // If not found
+}
     
 }

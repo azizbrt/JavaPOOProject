@@ -122,6 +122,50 @@ public boolean deleteBook(int id){
     }
     
 }
+public Book getBookById(int id) {
+
+    String sql = "SELECT * FROM books WHERE id = ?";
+
+    try (Connection con = DBconnection.getConnection();
+         PreparedStatement pst = con.prepareStatement(sql)) {
+
+        pst.setInt(1, id);
+
+        ResultSet rs = pst.executeQuery();
+
+        if (rs.next()) {
+
+            return new Book(
+                    rs.getInt("id"),
+                    rs.getString("title"),
+                    rs.getString("author"),
+                    rs.getInt("quantity")
+            );
+        }
+
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+
+    return null;  // If not found
+}
+
+   public boolean updateBookQuantity(Book book) {
+        String sql = "UPDATE books SET quantity = ? WHERE id = ?";
+
+        try (Connection con = DBconnection.getConnection();
+             PreparedStatement pst = con.prepareStatement(sql)) {
+
+            pst.setInt(1, book.getQuantity());
+            pst.setInt(2, book.getId());
+
+            return pst.executeUpdate() > 0; // returns true if update succeeded
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
 
 
